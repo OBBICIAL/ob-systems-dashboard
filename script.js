@@ -2,6 +2,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // Target Card Interactivity
     const targetCards = document.querySelectorAll('.target-card');
     
+    const intelData = {
+        'auraflow': {
+            name: 'AuraFlow',
+            arr: '$500K',
+            tech: 'HubSpot (Missing)',
+            dm: 'Founder/CEO',
+            title: "Why AuraFlow's Onboarding Sequence is Leaking Users",
+            content: `
+                <p>AuraFlow's core value proposition gets lost in their complex product tour. Without a compelling top-of-funnel explainer, early-stage prospects struggle to see the immediate ROI of the platform before signing up.</p>
+                <p>This ambiguity creates hesitation right at the consideration stage. Our analysis indicates that missing visual aids are the primary reason why they fail to convert high-intent traffic into active trials.</p>
+                <p>By producing a dynamic, 60-second workflow demonstration that highlights the "aha" moment instantly, AuraFlow can significantly reduce friction and boost their free-to-paid conversion rates.</p>
+            `
+        },
+        'cognito': {
+            name: 'Cognito AI',
+            arr: '$1.2M',
+            tech: 'Wistia (Missing)',
+            dm: 'VP of Growth',
+            title: "Why Cognito's Integration Narrative is Leaking Users",
+            content: `
+                <p>Cognito AI's current homepage relies heavily on dense text blocks and complex diagrams to explain their core integration value prop. Without a clarifying top-of-funnel explainer video, visitors are forced to parse technical jargon before understanding the fundamental problem Cognito solves.</p>
+                <p>This cognitive overload creates a significant friction point right at the awareness stage. Our analysis indicates this presentation gap is the primary driver behind their elevated bounce rates, specifically among non-technical stakeholders who are often key decision-makers.</p>
+                <p>By implementing a highly targeted, 60-second visual asset that distills the integration workflow into a simple, relatable narrative, Cognito AI can rapidly bridge this comprehension gap, lowering bounce rates and accelerating the buyer journey for high-intent visitors.</p>
+            `
+        },
+        'nexus': {
+            name: 'Nexus Data',
+            arr: '$2.5M',
+            tech: 'Marketo (Missing)',
+            dm: 'CMO',
+            title: "Why Nexus Data's Analytics Pitch is Leaking Users",
+            content: `
+                <p>Nexus Data offers an incredibly powerful analytics suite, but their current landing page focuses too heavily on features rather than outcomes. Potential enterprise clients are left wondering how the platform actually fits into their daily workflow.</p>
+                <p>This lack of narrative alignment is causing them to lose deals to competitors with less robust features but clearer messaging. Decision-makers need to see the platform in action to build trust.</p>
+                <p>A premium, story-driven 60-second commercial focusing on the end-user transformation—rather than dashboard features—will elevate Nexus Data's brand authority and dramatically shorten their enterprise sales cycle.</p>
+            `
+        }
+    };
+
+    const focusName = document.querySelector('.company-focus .highlight');
+    const metricValues = document.querySelectorAll('.metrics-grid .metric-value');
+    const teardownTitle = document.querySelector('.teardown-title');
+    const teardownContent = document.querySelector('.teardown-content');
+
     targetCards.forEach(card => {
         card.addEventListener('click', () => {
             // Remove active class from all
@@ -9,7 +53,27 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add to clicked
             card.classList.add('active');
             
-            // In a real app, this would trigger an update to Column 2 and 3
+            const companyId = card.getAttribute('data-id');
+            const data = intelData[companyId];
+            
+            if (data) {
+                // Update Intel Section
+                focusName.textContent = data.name;
+                metricValues[0].textContent = data.arr;
+                metricValues[1].textContent = data.tech;
+                metricValues[2].textContent = data.dm;
+                teardownTitle.textContent = data.title;
+                teardownContent.innerHTML = data.content;
+                
+                // Add quick pulse animation to column 2
+                const colIntel = document.querySelector('.col-intel');
+                colIntel.style.transition = 'none';
+                colIntel.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    colIntel.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+                    colIntel.style.transform = 'scale(1)';
+                }, 50);
+            }
         });
     });
 
