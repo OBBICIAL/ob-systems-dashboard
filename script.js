@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const slider = document.getElementById('leak-slider');
     const sliderPercentage = document.getElementById('slider-percentage');
     const leakValue = document.getElementById('leak-value');
+    const leakBar = document.getElementById('leak-bar');
     
     // Base traffic value for the mockup math
     // Let's assume max leak is $29,000 at 50%
@@ -43,6 +44,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update slider background dynamically for visual appeal
         const progress = (percentage / slider.max) * 100;
         slider.style.background = `linear-gradient(to right, var(--emerald-500) ${progress}%, #334155 ${progress}%)`;
+        
+        // Update leak visualizer bar width and color based on severity
+        if(leakBar) {
+            leakBar.style.width = `${progress}%`;
+            // Interpolate color from green to red based on progress
+            if (progress > 60) {
+                leakValue.style.color = 'var(--red-400)';
+            } else if (progress > 30) {
+                leakValue.style.color = '#facc15'; /* yellow */
+            } else {
+                leakValue.style.color = 'var(--emerald-400)';
+            }
+        }
     }
 
     slider.addEventListener('input', updateLeakageValue);
