@@ -13,7 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>AuraFlow's core value proposition gets lost in their complex product tour. Without a compelling top-of-funnel explainer, early-stage prospects struggle to see the immediate ROI of the platform before signing up.</p>
                 <p>This ambiguity creates hesitation right at the consideration stage. Our analysis indicates that missing visual aids are the primary reason why they fail to convert high-intent traffic into active trials.</p>
                 <p>By producing a dynamic, 60-second workflow demonstration that highlights the "aha" moment instantly, AuraFlow can significantly reduce friction and boost their free-to-paid conversion rates.</p>
-            `
+            `,
+            maxLeak: 15000,
+            angleSubtitle: `"The 'Aha' Demonstration"`,
+            angleDesc: `A highly engaging visual walkthrough targeting the Founder. We compress their complex product tour into a dynamic 60-second video that immediately answers "what's in it for me?" before users even sign up.`
         },
         'cognito': {
             name: 'Cognito AI',
@@ -25,7 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>Cognito AI's current homepage relies heavily on dense text blocks and complex diagrams to explain their core integration value prop. Without a clarifying top-of-funnel explainer video, visitors are forced to parse technical jargon before understanding the fundamental problem Cognito solves.</p>
                 <p>This cognitive overload creates a significant friction point right at the awareness stage. Our analysis indicates this presentation gap is the primary driver behind their elevated bounce rates, specifically among non-technical stakeholders who are often key decision-makers.</p>
                 <p>By implementing a highly targeted, 60-second visual asset that distills the integration workflow into a simple, relatable narrative, Cognito AI can rapidly bridge this comprehension gap, lowering bounce rates and accelerating the buyer journey for high-intent visitors.</p>
-            `
+            `,
+            maxLeak: 29000,
+            angleSubtitle: `"The 60-Second Hook"`,
+            angleDesc: `A punchy, cinematic overview targeting the VP of Growth. We visually contrast the painful "old way" of fragmented data with Cognito's seamless "new way", establishing immediate trust and clarity before they scroll past the fold.`
         },
         'nexus': {
             name: 'Nexus Data',
@@ -37,7 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>Nexus Data offers an incredibly powerful analytics suite, but their current landing page focuses too heavily on features rather than outcomes. Potential enterprise clients are left wondering how the platform actually fits into their daily workflow.</p>
                 <p>This lack of narrative alignment is causing them to lose deals to competitors with less robust features but clearer messaging. Decision-makers need to see the platform in action to build trust.</p>
                 <p>A premium, story-driven 60-second commercial focusing on the end-user transformation—rather than dashboard features—will elevate Nexus Data's brand authority and dramatically shorten their enterprise sales cycle.</p>
-            `
+            `,
+            maxLeak: 65000,
+            angleSubtitle: `"The Strategic Commercial"`,
+            angleDesc: `A premium, story-driven commercial focusing on the CMO. We shift the narrative from dashboard features to enterprise transformation, proving how Nexus Data practically fits into their daily workflow and drives revenue.`
         }
     };
 
@@ -45,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const metricValues = document.querySelectorAll('.metrics-grid .metric-value');
     const teardownTitle = document.querySelector('.teardown-title');
     const teardownContent = document.querySelector('.teardown-content');
+    const angleSubtitleNode = document.querySelector('.angle-subtitle');
+    const angleDescriptionNode = document.querySelector('.angle-description');
 
     targetCards.forEach(card => {
         card.addEventListener('click', () => {
@@ -65,6 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 teardownTitle.textContent = data.title;
                 teardownContent.innerHTML = data.content;
                 
+                // Update Calculator and Angle
+                angleSubtitleNode.textContent = data.angleSubtitle;
+                angleDescriptionNode.textContent = data.angleDesc;
+                currentMaxLeak = data.maxLeak;
+                updateLeakageValue();
+                
                 // Add quick pulse animation to column 2
                 const colIntel = document.querySelector('.col-intel');
                 colIntel.style.transition = 'none';
@@ -84,8 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const leakBar = document.getElementById('leak-bar');
     
     // Base traffic value for the mockup math
-    // Let's assume max leak is $29,000 at 50%
-    const maxLeakageAmount = 29000;
+    let currentMaxLeak = 29000;
     
     function updateLeakageValue() {
         const percentage = parseInt(slider.value, 10);
@@ -93,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Calculate the simulated monetary leak
         // e.g. at 25% we want to show $14,500
-        const calculatedValue = (percentage / 50) * maxLeakageAmount;
+        const calculatedValue = (percentage / 50) * currentMaxLeak;
         
         // Format as currency
         const formattedValue = new Intl.NumberFormat('en-US', {
